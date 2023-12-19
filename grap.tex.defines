@@ -10,14 +10,15 @@
 # If you want to use these two symbols, you must load the 'amssym' package,
 # ie. put \usepackage{amssymb} in the preamble of your document.
 # 
-define delta	{"\textrm{\fontsize{8}{0}\selectfont{$\triangle$}}"}
-define bullet	{"\textrm{\fontsize{9}{0}\selectfont{$\bullet$}}"}
-define vtick	{"\textrm{\fontsize{8}{0}\selectfont{$\mid$}}"}
-define square	{"\textrm{\fontsize{8}{0}\selectfont{$\square$}}"}
-define box	{"\textrm{\fontsize{8}{0}\selectfont{$\blacksquare$}}"}
-define times	{"\textrm{\fontsize{8}{0}\selectfont$\times$}"}
-define htick	{"\textrm{\fontsize{8}{0}\selectfont{--}}"}
-define plus	{"\textrm{\fontsize{8}{0}\selectfont{+}}"}
-define star	{"\textrm{\fontsize{8}{0}\selectfont$\star$}"}
-define dot	{"\textrm{\fontsize{8}{0}\selectfont$\cdot$}"}
+define delta	{"$\triangle$"}
+define bullet	{"$\bullet$"}
+define vtick	{"$\mid$"}
+define square	{"$\qed$"}
+define box	{"$\blacksquare$"}
+define times	{"$\times$"}
+define htick	{"{--}"}
+define plus	{"{+}"}
+define star	{"$\star$"}
+define dot	{"$\cdot$"}
+
 .G2
