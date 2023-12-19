@@ -16,14 +16,14 @@ install:V: grap
 	mkdir -p $PREFIX/etc/grap
 	cp grap.defines grap.tex.defines $PREFIX/etc/grap/
 
-%.o: %.cc config.h
+%.o: %.cc config.h y.tab.h
 	$CXX $CXXFLAGS $DEFS -c $stem.cc
 
 grap_lex.cc: grap_lex.ll
 	$LEX -o $target $prereq
 
-y.tab.c: grap.yy
-	$YACC $prereq
+y.tab.c y.tab.h: grap.yy
+	$YACC -d $prereq
 
 grap.cc: y.tab.c
 	cp $prereq $target

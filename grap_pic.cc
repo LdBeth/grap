@@ -164,7 +164,7 @@ void Picframe::frame_line(double x2, double y2, sides s) {
 	    cout << "Bottom: ";
 	    break;
     }
-    cout << "[ line ";
+    cout << "line ";
     switch (desc[s].ld) {
 	case invis:
 	    cout << "invis ";
@@ -187,7 +187,7 @@ void Picframe::frame_line(double x2, double y2, sides s) {
 	if ( desc[s].color ) cout << " color " << *desc[s].color << " " ;
 	if ( desc[s].thick ) cout << " thickness " << desc[s].thick << " " ;
     }
-    cout << "right " << x2 << " up " << y2 << " ];" << endl;
+    cout << "right " << x2 << " up " << y2 << endl;
 }
 
 void Picframe::label_line(sides s) {
@@ -384,12 +384,12 @@ void Picframe::draw(frame *) {
     draw_grid_f draw_grid(this);
 
     cout << "Frame: [" << endl;
-    cout << "Origin: [" << endl;
+    cout << "Origin: [ ]" << endl;
     frame_line(0,ht,left_side);
     frame_line(wid,0,top_side);
     frame_line(0,-ht,right_side);
     frame_line(-wid,0,bottom_side);
-    cout << "] ]" << endl;
+    cout << "]" << endl;
 
     for ( int i = 0; i < 4 ; i++ ) {
 	if ( label[(sides)i] )
