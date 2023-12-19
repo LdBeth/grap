@@ -374,12 +374,12 @@ string:
 		 if (tm) {
 		     if (strftime(buf, len, $3->c_str(), tm) != 0 ) {
 		     	$$ = new string(buf);
-			delete buf;
+			delete[] buf;
 			ok = true;
 		     }
 		}
 		if ( !ok) {
-		    delete buf;
+		    delete[] buf;
 		    cerr << "Cannot format " << $5 << " using format " 
 		         << *$3 << endl;
 		    $$ = new string("error");

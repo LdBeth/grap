@@ -871,8 +871,8 @@ void usage() {
     cerr << "Coarse minimum value: " << COARSE_MIN_DOUBLE << endl;
     cerr << "Defines are in " << DEFINES << endl;
     cerr << "See the man page for more information." << endl;
-    cerr << "Documentation in " << DOCS_DIR << endl;
-    cerr << "Examples in " << EXAMPLES_DIR << endl;
+    // cerr << "Documentation in " << DOCS_DIR << endl;
+    // cerr << "Examples in " << EXAMPLES_DIR << endl;
     exit(5);
 }
 
@@ -884,8 +884,8 @@ inline void version() {
     cerr << "Coarse comparison limit: " << COARSE_EPSILON << endl;
     cerr << "Coarse minimum value: " << COARSE_MIN_DOUBLE << endl;
     cout << "Report bugs to " << PACKAGE_BUGREPORT << endl;
-    cout << "Documentation in " << DOCS_DIR << endl;
-    cout << "Examples in " << EXAMPLES_DIR << endl;
+    // cout << "Documentation in " << DOCS_DIR << endl;
+    // cout << "Examples in " << EXAMPLES_DIR << endl;
     cout << "Defines are in " << DEFINES << endl;
     exit(5);
 }
