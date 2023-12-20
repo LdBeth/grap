@@ -1,14 +1,18 @@
 NPROC=4
 YACC=u yacc
 LEX=u lex
-TARGET=grap_draw.o grap_pic.o grap_parse.o
 SOURCES=grap_draw.cc grap_pic.cc grap_parse.cc grap_tokenizer.cc
+TARGETS=${SOURCES:%.cc=%.o} grap_lex.o grap.o
 CXX=clang++
-CXXFLAGS=-O2 -Wall -Wno-deprecated-declarations -std=c++0x
+CXXFLAGS=-O2 -Wall -std=c++0x
 PREFIX=/usr/local
 DEFS=-DHAVE_CONFIG_H -DHAVE_SNPRINTF -DHAVE_UNISTD_H
 
 all:V: grap
+
+clean:V:
+    rm -f $TARGETS
+    rm -f grap
 
 install:V: grap
 	install grap $PREFIX/bin
@@ -31,5 +35,5 @@ grap.cc: y.tab.c
 config.h:
 	sh ./buildconfig.sh > $target
 
-grap: ${SOURCES:%.cc=%.o} grap_lex.o grap.o
+grap: $TARGETS
 	$CXX -o $target $prereq

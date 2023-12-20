@@ -18,4 +18,5 @@ grap_lex.cc
 missing
 stamp-h1
 y.tab.h
+y.tab.c
 ylwrap
