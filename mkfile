@@ -8,15 +8,15 @@ CXXFLAGS=-O2 -Wall -std=c++0x
 PREFIX=/usr/local
 DEFS=-DHAVE_CONFIG_H -DHAVE_SNPRINTF -DHAVE_UNISTD_H
 
-all:V: grap
+all:V: grap grap.1
 
 clean:V:
     rm -f $TARGETS
     rm -f grap
 
-install:V: grap
+install:V: all
 	install grap $PREFIX/bin
-	install grap.doc $PREFIX/share/man/man1/grap.1
+	install grap.1 $PREFIX/share/man/man1/grap.1
 	mkdir -p $PREFIX/etc/grap
 	cp grap.defines grap.tex.defines $PREFIX/etc/grap/
 
@@ -37,3 +37,6 @@ config.h:
 
 grap: $TARGETS
 	$CXX -o $target $prereq
+
+grap.1: grap.doc
+	mandoc -T man $prereq > $target

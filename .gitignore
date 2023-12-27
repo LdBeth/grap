@@ -13,7 +13,7 @@ configure
 depcomp
 grap
 grap.cc
-grap.man
+grap.1
 grap_lex.cc
 missing
 stamp-h1
