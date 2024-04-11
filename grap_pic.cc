@@ -143,7 +143,7 @@ void PicDisplayString::draw(frame *) {
     if ( j & (int) rjust ) cout << "rjust ";
     if ( j & (int) above ) cout << "above ";
     if ( j & (int) below ) cout << "below ";
-    if ( j & (int) aligned ) cout << "aligned ";
+    // if ( j & (int) aligned ) cout << "aligned ";
 }
 
 
@@ -384,7 +384,7 @@ void Picframe::draw(frame *) {
     draw_grid_f draw_grid(this);
 
     cout << "Frame: [" << endl;
-    cout << "Origin: [ ]" << endl;
+    cout << "Origin: Here" << endl;
     frame_line(0,ht,left_side);
     frame_line(wid,0,top_side);
     frame_line(0,-ht,right_side);
