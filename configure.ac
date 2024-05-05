@@ -2,10 +2,10 @@ dnl -*-m4-*-
 dnl Process this file with autoconf to produce a configure script.
 dnl NB grap.m4 moved to source dir for automake
 m4_include([grap.m4])
-AC_INIT(grap, 1.46, faber@lunabase.org)
-AC_CONFIG_HEADER(config.h)
+AC_INIT([grap],[1.47],[faber@lunabase.org])
+AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE
-AC_LANG_CPLUSPLUS
+AC_LANG([C++])
 
 dnl for autoheader
 AH_TEMPLATE([DEFINES], [The pathname of the grap.defines file])
@@ -15,6 +15,7 @@ AH_TEMPLATE([GRAP_SAFER], [True if the grap sprintf command is disabled])
 AH_TEMPLATE([HASH_SPACE], [C++ namespace where hash_map lives])
 AH_TEMPLATE([OPTARG_DEFINED], [True if optarg is defined by headers])
 AH_TEMPLATE([OS_VERSION], [OS version])
+AH_TEMPLATE([HAVE_RANDOM], [Define to 1 if you have the random function])
 AH_TEMPLATE([RANDOM_DECLARED], [True if random() is declared])
 AH_TEMPLATE([RANDOM_IN_MATH], [True if random() is declared in math.h])
 AH_TEMPLATE([RAND_DECLARED], [True if rand() is declared])
@@ -31,13 +32,14 @@ dnl anyway.  So don't try it again.
 
 dnl Checks for programs.
 AC_PROG_CXX
+AC_PROG_CXXCPP
 
 dnl Set g++ specific compiler options 
 TVF_PROG_GXX_SUBST(GXXFLAGS,-Wall)
 TVF_PROG_GXX_SUBST(NO_UNDEF,-Wno-unused)
 TVF_PROG_GXX_SUBST(SUPPRESS_OPT,-O0)
 
-AC_PROG_LEX
+AC_PROG_LEX(noyywrap)
 AC_PROG_YACC
 AC_PROG_INSTALL
 TVF_OS_VERSION
@@ -47,10 +49,10 @@ old_cxxflags="$CXXFLAGS"
 old_cppflags="$CPPFLAGS"
 CXXFLAGS="$CXXFLAGS -std=c++0x"
 CPPFLAGS="$CPPFLAGS -std=c++0x"
-AC_TRY_COMPILE([], [], [
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[]])],[
 	CX0FLAGS="-std=c++0x"
 	AC_MSG_RESULT(yes)
-	], [
+	],[
 	CX0FLAGS=""
 	CXXFLAGS="$old_cxxflags"
 	CPPFLAGS="$old_cppflags"
@@ -78,44 +80,17 @@ AC_SUBST(INSTALL_DOCS)
 dnl Checks for libraries.
 
 dnl Checks for header files.
-AC_HEADER_STDC
-if test $ac_cv_header_stdc = "no"; then
-	AC_CHECK_HEADERS(stdlib.h)
-fi
+# Autoupdate added the next two lines to ensure that your configure
+# script's behavior did not change.  They are probably safe to remove.
+AC_DEFINE(STDC_HEADERS)
+AC_CHECK_INCLUDES_DEFAULT
+AC_PROG_EGREP
+
 AC_CHECK_HEADERS(unistd.h errno.h limits)
 
-AC_CHECK_HEADERS(unordered_map hash_map ext/hash_map, [
-	AC_COMPILE_IFELSE(
-		AC_LANG_PROGRAM([
-#ifdef HAVE_UNORDERED_MAP
-#include <unordered_map>
-#endif
-#ifdef HAVE_HASH_MAP
-#include <hash_map>
-#endif
-#ifdef HAVE_EXT_HASH_MAP
-#include <ext/hash_map>
-#endif
-],[
-   std::hash<char *> h;
-]),
-[ AC_DEFINE(HASH_SPACE, std) break],
-	AC_COMPILE_IFELSE(
-		AC_LANG_PROGRAM([
-#ifdef HAVE_UNORDERED_MAP
-#include <unordered_map>
-#endif
-#ifdef HAVE_HASH_MAP
-#include <hash_map>
-#endif
-#ifdef HAVE_EXT_HASH_MAP
-#include <ext/hash_map>
-#endif
-],[
-   __gnu_cxx::hash<char *> h;
-]),
-[ AC_DEFINE(HASH_SPACE, __gnu_cxx) break;],[]))]
-)
+AC_CHECK_HEADERS(unordered_map hash_map ext/hash_map)
+AC_DEFINE(HASH_SPACE,std,[Namespace for hash maps])
+
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_SIZE_T
 
@@ -124,12 +99,14 @@ TVF_FUNC_DECL(snprintf,stdio.h)
 TVF_FUNC_DECL(strdup, stdio.h string.h,REPLACE)
 TVF_FUNC_DECL(strerror, stdio.h string.h,REPLACE)
 
-TVF_DECL_RANDOM
+dnl Autoconf believes these are always available
+AC_DEFINE(HAVE_RANDOM)
+AC_DEFINE(RANDOM_DECLARED)
 TVF_DECL_OPTARG
 
 if test "$ac_cv_func_snprintf" = "no"; then
 AC_CACHE_CHECK(if sprintf returns an int, grap_cv_sprintf_int,
-AC_TRY_RUN([
+AC_RUN_IFELSE([AC_LANG_SOURCE([[
 changequote(<<, >>)dnl
 #include <stdio.h>
 int main(int argc, char **argv) {
@@ -138,7 +115,7 @@ int main(int argc, char **argv) {
 	else return 0;
 }
 changequote([, ])dnl
-],grap_cv_sprintf_int="yes",grap_cv_sprintf_int="no",echo ""))
+]])],[grap_cv_sprintf_int="yes"],[grap_cv_sprintf_int="no"],[echo ""]))
 
 if test "$grap_cv_sprintf_int" = "no" ; then 
 AC_DEFINE(SPRINTF_NOT_INT)
@@ -213,4 +190,5 @@ fi
 
 GRAPLIBOBJS=$LIBOBJS
 AC_SUBST(GRAPLIBOBJS)
-AC_OUTPUT(Makefile)
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
